@@ -22,13 +22,13 @@ public class UsuarioController {
 	@Autowired
 	static private Usuarios usuarios;
 
-	@GetMapping(value = "/getUsuarios", produces = "application/json")
+	@GetMapping(value = "/usuarios", produces = "application/json")
 	public @ResponseBody void getUsuarios() throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(new File("./newUser.json"), usuarios);
 	}
 
-	@RequestMapping(value = "/postUsuario", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/usuarios", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public @ResponseBody Usuario postUsuario(@RequestBody Usuario novoUsuario) {
 		System.out.println("Creating a new User: " + novoUsuario.getNome());
 		return novoUsuario;
