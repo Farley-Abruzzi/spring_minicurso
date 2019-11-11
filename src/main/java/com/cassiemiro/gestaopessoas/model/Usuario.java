@@ -10,17 +10,29 @@ import javax.persistence.Id;
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
 	private String nome;
 	private String email;
-	private char sexo;
+	private String sexo;
 	private String endereco;
 	private String telefone;
 	private String dataNasc;
 	private String cpf;
+
+	public Usuario(long id, String nome, String email, String sexo, String endereco, String telefone, String dataNasc,
+			String cpf) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.sexo = sexo;
+		this.endereco = endereco;
+		this.telefone = telefone;
+		this.dataNasc = dataNasc;
+		this.cpf = cpf;
+	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -38,11 +50,11 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-	public void setSexo(char sexo) {
+	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 
-	public char getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
 
@@ -77,6 +89,7 @@ public class Usuario implements Serializable {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+
 	public Long getId() {
 		return id;
 	}
