@@ -1,36 +1,44 @@
 package com.cassiemiro.gestaopessoas.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cassiemiro.gestaopessoas.model.Usuario;
-import com.cassiemiro.gestaopessoas.repository.Usuarios;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cassiemiro.gestaopessoas.repository.UsuarioDAO;
 
-@Controller
+
+@RestController
 public class UsuarioController {
+	
 	@Autowired
-	static private Usuarios usuarios;
-
-	@GetMapping(value = "/usuarios", produces = "application/json")
-	public @ResponseBody void getUsuarios() throws JsonGenerationException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(new File("./newUser.json"), usuarios);
+	private UsuarioDAO usuarioDAO;
+	
+	@GetMapping("/usuarios")
+	public List<Usuario> getUsuarios() {
+		return usuarioDAO.list();
 	}
-
-	@RequestMapping(value = "/usuarios", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public @ResponseBody Usuario postUsuario(@RequestBody Usuario novoUsuario) {
-		System.out.println("Creating a new User: " + novoUsuario.getNome());
-		return novoUsuario;
+	
+	@GetMapping("/usuarios/{id}")
+	public ResponseEntity<?> getUsuario(@PathVariable("id")Long id) {
+		
+		Usuario usuario = usuarioDAO.get(id);
+		if (usuario == null) {
+			return new ResponseEntity<String>("Nenhum usuário com esse ID foi encontrado" + id,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);	
+	}
+	
+	@PostMapping("/usuarios")
+	public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
+		usuarioDAO.create(usuario);
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 }
