@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Usuario implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String nome;
 	private String email;
 	private String sexo;
@@ -22,7 +22,10 @@ public class Usuario implements Serializable {
 	private String dataNasc;
 	private String cpf;
 
-	public Usuario(long id, String nome, String email, String sexo, String endereco, String telefone, String dataNasc,
+	public Usuario(){
+	}
+
+	public Usuario(Integer id, String nome, String email, String sexo, String endereco, String telefone, String dataNasc,
 			String cpf) {
 		this.id = id;
 		this.nome = nome;
@@ -90,8 +93,16 @@ public class Usuario implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [cpf=" + cpf + ", dataNasc=" + dataNasc + ", email=" + email + ", endereco=" + endereco
+				+ ", id=" + id + ", nome=" + nome + ", sexo=" + sexo + ", telefone=" + telefone + "]";
+	}
+
+	
 
 }
